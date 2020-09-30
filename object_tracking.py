@@ -35,7 +35,11 @@ while True:
     cv2.line(frame, (576, 0), (576, 680), (0, 0, 255), 1)
     lb = np.array([0,123,116])
     ub = np.array([255,255,255])
-    
+    mask = cv2.inRange(frame2,lb,ub)
+    mask = cv2.erode(mask,None,iterations=2)
+    mask = cv2.dilate(mask,None,iterations=2)
+    opening = cv2.morphologyEx(mask,cv2.MORPH_OPEN,kernel)
+    res = cv2.bitwise_and(frame,frame,mask=mask)
 
     contours,hierarchy = cv2.findContours(opening,cv2.RETR_TREE,cv2.CHAIN_APPROX_NONE)
 
